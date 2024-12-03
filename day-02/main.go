@@ -52,10 +52,42 @@ func main() {
 		arr[index] = GenerateSliceOfInts(value)
 	}
 
+	fmt.Printf("Initial Array: %d\n", arr)
 	// PART 1
-
+	for _, report := range arr {
+		if isReportSafe(report) {
+			noOfSafeReports++
+		}
+	}
 	// PART 2
 
 	fmt.Printf("No of safe reports: %d\n", noOfSafeReports)
 	fmt.Printf("No of damped reports: %d\n", noOfDampedReports)
+}
+
+func isReportSafe(report []int) bool {
+	isSafe := false
+	isIncreasing := true
+	isDecreasing := true
+
+	for idx := 0; idx < len(report)-1; idx++ {
+
+		if report[idx+1] < report[idx] {
+			isIncreasing = false
+		}
+		if report[idx+1] > report[idx] {
+			isDecreasing = false
+		}
+		if report[idx+1] == report[idx] {
+			isIncreasing = false
+			isDecreasing = false
+		}
+
+		if Abs(report[idx+1]-report[idx]) <= 3 && (isIncreasing != isDecreasing) {
+			isSafe = true
+		} else {
+			return false
+		}
+	}
+	return isSafe
 }
