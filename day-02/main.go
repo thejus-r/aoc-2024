@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -66,6 +65,7 @@ func main() {
 
 	// PART 2
 	fmt.Printf("No of damped reports: %d\n", noOfDampedReports)
+	fmt.Printf("Total Safe Reports: %d\n", noOfSafeReports+noOfDampedReports)
 }
 
 func isReportSafe(report []int) bool {
@@ -95,37 +95,20 @@ func isReportSafe(report []int) bool {
 	return isSafe
 }
 
+func delOneEl(arr []int, idx int) []int {
+	temp := []int{}
+	temp = append(temp, arr[:idx]...)
+	temp = append(temp, arr[idx+1:]...)
+	return temp
+}
+
 func isReportDampable(report []int) bool {
-	isSafe := false
-	isIncreasing := true
-	isDecreasing := true
-
-	for idx := 0; idx < len(report)-1; idx++ {
-
-		if report[idx+1] < report[idx] {
-			temp := slices.Delete(report, idx, idx+1)
-			if isReportSafe(temp) {
-				isIncreasing = true
-			}
-			temp = slices.Delete(report, idx+1, idx+2)
-			if isReportSafe(temp) {
-				isIncreasing = true
-			}
-			isIncreasing = false
-		}
-		if report[idx+1] > report[idx] {
-			isDecreasing = false
-		}
-		if report[idx+1] == report[idx] {
-			isIncreasing = false
-			isDecreasing = false
-		}
-
-		if isIncreasing != isDecreasing {
-			isSafe = true
-		} else {
-			return false
+	for idx := 0; idx < len(report); idx++ {
+		temp := delOneEl(report, idx)
+		fmt.Println(temp)
+		if isReportSafe(temp) {
+			return true
 		}
 	}
-	return isSafe
+	return false
 }
