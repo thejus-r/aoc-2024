@@ -8,18 +8,18 @@ import (
 	"strings"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-// Abs returns the absolute value of x.
+// This function returns absolute value of an integer
 func Abs(x int) int {
 	if x < 0 {
 		return -x
 	}
 	return x
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
 
 func main() {
@@ -34,7 +34,8 @@ func main() {
 	var inputArr2 []int
 
 	for _, value := range strarr {
-		temp := strings.Split(value, "   ")
+		// splits the string around each instance of one or more consecutive white space characters
+		temp := strings.Fields(value)
 		arrEl1, _ := strconv.Atoi(temp[0])
 		arrEl2, _ := strconv.Atoi(temp[1])
 		inputArr1 = append(inputArr1, arrEl1)
