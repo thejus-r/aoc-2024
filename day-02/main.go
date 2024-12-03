@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -52,16 +53,18 @@ func main() {
 		arr[index] = GenerateSliceOfInts(value)
 	}
 
-	fmt.Printf("Initial Array: %d\n", arr)
 	// PART 1
 	for _, report := range arr {
 		if isReportSafe(report) {
 			noOfSafeReports++
+		} else if isReportDampable(report) {
+			noOfDampedReports++
 		}
-	}
-	// PART 2
 
+	}
 	fmt.Printf("No of safe reports: %d\n", noOfSafeReports)
+
+	// PART 2
 	fmt.Printf("No of damped reports: %d\n", noOfDampedReports)
 }
 
@@ -84,6 +87,41 @@ func isReportSafe(report []int) bool {
 		}
 
 		if Abs(report[idx+1]-report[idx]) <= 3 && (isIncreasing != isDecreasing) {
+			isSafe = true
+		} else {
+			return false
+		}
+	}
+	return isSafe
+}
+
+func isReportDampable(report []int) bool {
+	isSafe := false
+	isIncreasing := true
+	isDecreasing := true
+
+	for idx := 0; idx < len(report)-1; idx++ {
+
+		if report[idx+1] < report[idx] {
+			temp := slices.Delete(report, idx, idx+1)
+			if isReportSafe(temp) {
+				isIncreasing = true
+			}
+			temp = slices.Delete(report, idx+1, idx+2)
+			if isReportSafe(temp) {
+				isIncreasing = true
+			}
+			isIncreasing = false
+		}
+		if report[idx+1] > report[idx] {
+			isDecreasing = false
+		}
+		if report[idx+1] == report[idx] {
+			isIncreasing = false
+			isDecreasing = false
+		}
+
+		if isIncreasing != isDecreasing {
 			isSafe = true
 		} else {
 			return false
