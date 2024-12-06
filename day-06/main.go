@@ -50,7 +50,6 @@ func (d *DirectionController) changeDirection() {
 // global variables
 var maxRow, maxCol int
 var walkerMap [][]rune
-var directionController DirectionController
 
 func main() {
 	walkerMap = parseInput()
@@ -58,7 +57,7 @@ func main() {
 
 	// Directions in order UP, RIGHT, DOWN, LEFT (Right Rotation)
 	// curr Initialised to {0, -1}
-	directionController = DirectionController{
+	directionController := DirectionController{
 		all:  []Direction{{-1, 0}, {0, 1}, {1, 0}, {0, -1}},
 		curr: Direction{-1, 0},
 	}
@@ -72,11 +71,11 @@ func main() {
 	}
 
 	walked := make(map[Coordinates]int)
-	walker(curr, &walked)
+	walker(curr, &walked, directionController)
 	fmt.Println(len(walked))
 }
 
-func walker(curr Coordinates, walked *map[Coordinates]int) {
+func walker(curr Coordinates, walked *map[Coordinates]int, directionController DirectionController) {
 
 	(*walked)[curr] = (*walked)[curr] + 1
 	next := Coordinates{
@@ -92,5 +91,5 @@ func walker(curr Coordinates, walked *map[Coordinates]int) {
 	} else {
 		curr = next
 	}
-	walker(curr, walked)
+	walker(curr, walked, directionController)
 }
