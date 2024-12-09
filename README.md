@@ -1,13 +1,13 @@
 # My attempt of Advent of Code 2024 in Go-lang
 
-| Day | Part 1   |       | Part 2   |        |
-| --- | -------- | ----- | -------- | ------ |
-|     | Time     | Rank  | Time     | Rank   |
-| 1   | 05:44:25 | 32007 | 14:44:37 | 73982  |
-| 2   | 03:34:01 | 31390 | >24h     | 103615 |
-| 3   | 01:39:04 | 19916 | 03:40:15 | 26634  |
-| 4   | 06:03:15 | 36033 | 06:43:45 | 32105  |
-| 5   | 07:15:05 | 37915 | 10:05:08 | 36832  |
-| 6   | 02:48:01 | 18140 | 06:10:57 | 17099  |
-| 7   | 01:06:07 | 8710  | 02:06:47 | 10395  |
-| 8   | 06:15:50 | 23147 | 09:14:34 | 27551  |
+| Day | Puzzle                | Link                                                     | Code                                                          |
+| --- | --------------------- | -------------------------------------------------------- | ------------------------------------------------------------- |
+| 01  | Historian Hysteria    | [AoC 2024 - Day 01](https://adventofcode.com/2024/day/1) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-01) |
+| 02  | Red-Nosed Reports     | [AoC 2024 - Day 02](https://adventofcode.com/2024/day/2) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-02) |
+| 03  | Mull It Over          | [AoC 2024 - Day 03](https://adventofcode.com/2024/day/3) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-03) |
+| 04  | Ceres Search          | [AoC 2024 - Day 04](https://adventofcode.com/2024/day/4) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-04) |
+| 05  | Print Queue           | [AoC 2024 - Day 05](https://adventofcode.com/2024/day/5) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-05) |
+| 06  | Guard Gallivant       | [AoC 2024 - Day 06](https://adventofcode.com/2024/day/6) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-06) |
+| 07  | Bridge Repair         | [AoC 2024 - Day 07](https://adventofcode.com/2024/day/7) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-07) |
+| 08  | Resonant Collinearity | [AoC 2024 - Day 08](https://adventofcode.com/2024/day/8) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-08) |
+| 09  | Disk Fragmenter       | [AoC 2024 - Day 09](https://adventofcode.com/2024/day/9) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-09) |
