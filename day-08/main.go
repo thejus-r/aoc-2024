@@ -1,3 +1,6 @@
+// AoC 2024, Day 08
+// Resonant Collinearity
+
 package main
 
 import (
