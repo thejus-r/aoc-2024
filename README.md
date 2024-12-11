@@ -12,3 +12,4 @@
 | 08  | Resonant Collinearity | [AoC 2024 - Day 08](https://adventofcode.com/2024/day/8)  | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-08) |
 | 09  | Disk Fragmenter       | [AoC 2024 - Day 09](https://adventofcode.com/2024/day/9)  | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-09) |
 | 10  | Hoof It               | [AoC 2024 - Day 10](https://adventofcode.com/2024/day/10) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-10) |
+| 11  | Plutonian Pebbles     | [AoC 2024 - Day 11](https://adventofcode.com/2024/day/11) | [Here](https://github.com/thejus-r/aoc-2024/tree/main/day-11) |
