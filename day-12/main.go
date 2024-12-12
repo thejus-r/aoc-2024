@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"slices"
 
@@ -12,6 +13,10 @@ import (
 
 type Point struct {
 	r, c int
+}
+
+type FloatPoint struct {
+	r, c float64
 }
 
 var seen map[Point]bool
@@ -44,7 +49,7 @@ func findAllRegions() {
 			region := []Point{{r: r, c: c}}
 			for !stk.IsEmpty() {
 				curr, _ := stk.Pop()
-				for _, next := range []Point{{curr.r - 1, curr.c}, {curr.r + 1, curr.c}, {curr.r, curr.c - 1}, {curr.r, curr.c + 1}} {
+				for _, next := range getNextPossiblePoints(curr) {
 					if next.r < 0 || next.c < 0 || next.r >= maxRow || next.c >= maxCol {
 						continue
 					}
@@ -67,27 +72,77 @@ func findAllRegions() {
 func findTotalCost() int {
 	cost := 0
 	for _, region := range regions {
-		cost = cost + len(region)*findPerimeter(region)
+		cost = cost + len(region)*findSides(region)
 	}
 	return cost
 }
 
-func findPerimeter(region []Point) int {
-	output := 0
+// Part 1
+// func findPerimeter(region []Point) int {
+// 	output := 0
+// 	for _, curr := range region {
+// 		output += 4
+// 		for _, next := range getNextPossiblePoints(curr) {
+// 			if slices.Contains(region, next) {
+// 				output -= 1
+// 			}
+// 		}
+// 	}
+// 	return output
+// }
+
+func getNextPossiblePoints(curr Point) []Point {
+	return []Point{{curr.r - 1, curr.c}, {curr.r + 1, curr.c}, {curr.r, curr.c - 1}, {curr.r, curr.c + 1}}
+}
+
+// Make a sub coordinate system with direction
+// Edge {[1.5,2] , [-0.5, 0]}
+func findSides(region []Point) int {
+
+	edges := make(map[FloatPoint]FloatPoint)
+
 	for _, curr := range region {
-		output += 4
-		for _, next := range []Point{{curr.r - 1, curr.c}, {curr.r + 1, curr.c}, {curr.r, curr.c - 1}, {curr.r, curr.c + 1}} {
+		for _, next := range getNextPossiblePoints(curr) {
 			if slices.Contains(region, next) {
-				output -= 1
+				continue
+			}
+			er := (curr.r + next.r) / 2
+			ec := (curr.c + next.c) / 2
+			edges[FloatPoint{r: float64(er), c: float64(ec)}] = FloatPoint{r: float64(er - curr.r), c: float64(er - curr.c)}
+		}
+	}
+
+	seen := make(map[FloatPoint]bool)
+	sideCount := 0
+	for edge, dir := range edges {
+		if seen[edge] {
+			continue
+		}
+		seen[edge] = true
+		sideCount += 1
+		if math.Mod(edge.r, 1) == 0 {
+			for _, dr := range []float64{-1, 1} {
+				cr := edge.r + dr
+				nextEdge := FloatPoint{cr, edge.c}
+				for edges[nextEdge] == dir {
+					seen[nextEdge] = true
+				}
+			}
+		} else {
+			for _, dc := range []float64{-1, 1} {
+				cc := edge.c + dc
+				nextEdge := FloatPoint{edge.r, cc}
+				for edges[nextEdge] == dir {
+					seen[nextEdge] = true
+				}
 			}
 		}
 	}
-	return output
-
+	return sideCount
 }
 
 func parseInput() [][]rune {
-	file, err := os.Open("input.txt")
+	file, err := os.Open("example.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
