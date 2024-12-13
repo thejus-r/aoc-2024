@@ -114,12 +114,12 @@ func findSides(region []Point) int {
 			if slices.Contains(region, next) {
 				continue
 			}
-			er := (curr.r + next.r) / 2
-			ec := (curr.c + next.c) / 2
-			edges[FloatPoint{r: float64(er), c: float64(ec)}] = FloatPoint{r: float64(er - curr.r), c: float64(er - curr.c)}
+			er := float64(curr.r+next.r) / 2
+			ec := float64(curr.c+next.c) / 2
+			edges[FloatPoint{r: er, c: ec}] = FloatPoint{r: er - float64(curr.r), c: ec - float64(curr.c)}
 		}
 	}
-
+	fmt.Println(edges)
 	seen := make(map[FloatPoint]bool)
 	sideCount := 0
 	for edge, dir := range edges {
@@ -152,7 +152,7 @@ func findSides(region []Point) int {
 }
 
 func parseInput() [][]rune {
-	file, err := os.Open("example.txt")
+	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
