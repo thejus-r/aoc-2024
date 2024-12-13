@@ -15,37 +15,28 @@ type Machine struct {
 }
 
 func main() {
-	machines := parseInput("input.txt")
 
-	totalPrizes := 0
+	// for part 2, pass "true"
+	machines := parseInput("input.txt", true)
+
 	totalCost := 0
 
-	for _, machine := range machines {
-		minCost := math.MaxInt32
-		foundSolution := false
+	// From equation
+	// (Ax * S) + (Bx * T) = Px and (Ay * S) + (By * T) = Py :- This will have unique solution
+	// we can solve S = (Px * By - Py * Bx) / (Ax * By - Ay * Bx) and T = (Px - Ax * S) / Bx
+	for _, m := range machines {
+		ca := float64(m.Px*m.By-m.Py*m.Bx) / float64(m.Ax*m.By-m.Ay*m.Bx)
+		cb := (float64(m.Px) - float64(m.Ax)*ca) / float64(m.Bx)
 
-		for a := 0; a <= 100; a++ {
-			for b := 0; b <= 100; b++ {
-				if a*machine.Ax+b*machine.Bx == machine.Px && a*machine.Ay+b*machine.By == machine.Py {
-					foundSolution = true
-					cost := a*3 + b*1
-					if cost < minCost {
-						minCost = cost
-					}
-				}
-			}
+		// Check for Int -> Button cannot be pressed in a fraction
+		if math.Mod(ca, 1) == 0 && math.Mod(cb, 1) == 0 {
+			totalCost += int(ca)*3 + int(cb)
 		}
-
-		if foundSolution {
-			totalPrizes++
-			totalCost += minCost
-		}
-
 	}
-	fmt.Println(totalCost)
+	fmt.Printf("No of Tokens: %d\n", totalCost)
 }
 
-func parseInput(fileName string) []Machine {
+func parseInput(fileName string, part2 bool) []Machine {
 	dat, err := os.ReadFile(fileName)
 	utils.Check(err)
 	str := string(dat)
@@ -64,6 +55,10 @@ func parseInput(fileName string) []Machine {
 			By: utils.MustAtoi(matches[3+i]),
 			Px: utils.MustAtoi(matches[4+i]),
 			Py: utils.MustAtoi(matches[5+i]),
+		}
+		if part2 {
+			m.Px += 10000000000000
+			m.Py += 10000000000000
 		}
 		machines = append(machines, m)
 	}
