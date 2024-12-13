@@ -33,7 +33,8 @@ func main() {
 
 	findAllRegions()
 
-	fmt.Printf("Total cost: %d\n", findTotalCost())
+	fmt.Printf("Total cost in Part 1: %d\n", findTotalCostPart1())
+	fmt.Printf("Total cost in Part 2: %d\n", findTotalCostPart2())
 }
 
 func findAllRegions() {
@@ -69,7 +70,15 @@ func findAllRegions() {
 	}
 }
 
-func findTotalCost() int {
+func findTotalCostPart1() int {
+	cost := 0
+	for _, region := range regions {
+		cost = cost + len(region)*findPerimeter(region)
+	}
+	return cost
+}
+
+func findTotalCostPart2() int {
 	cost := 0
 	for _, region := range regions {
 		cost = cost + len(region)*findSides(region)
@@ -78,18 +87,18 @@ func findTotalCost() int {
 }
 
 // Part 1
-// func findPerimeter(region []Point) int {
-// 	output := 0
-// 	for _, curr := range region {
-// 		output += 4
-// 		for _, next := range getNextPossiblePoints(curr) {
-// 			if slices.Contains(region, next) {
-// 				output -= 1
-// 			}
-// 		}
-// 	}
-// 	return output
-// }
+func findPerimeter(region []Point) int {
+	output := 0
+	for _, curr := range region {
+		output += 4
+		for _, next := range getNextPossiblePoints(curr) {
+			if slices.Contains(region, next) {
+				output -= 1
+			}
+		}
+	}
+	return output
+}
 
 func getNextPossiblePoints(curr Point) []Point {
 	return []Point{{curr.r - 1, curr.c}, {curr.r + 1, curr.c}, {curr.r, curr.c - 1}, {curr.r, curr.c + 1}}
@@ -100,18 +109,17 @@ func getNextPossiblePoints(curr Point) []Point {
 func findSides(region []Point) int {
 
 	edges := make(map[FloatPoint]FloatPoint)
-
 	for _, curr := range region {
 		for _, next := range getNextPossiblePoints(curr) {
 			if slices.Contains(region, next) {
 				continue
 			}
-			er := (curr.r + next.r) / 2
-			ec := (curr.c + next.c) / 2
-			edges[FloatPoint{r: float64(er), c: float64(ec)}] = FloatPoint{r: float64(er - curr.r), c: float64(er - curr.c)}
+			er := float64(curr.r+next.r) / 2
+			ec := float64(curr.c+next.c) / 2
+			edges[FloatPoint{r: er, c: ec}] = FloatPoint{r: er - float64(curr.r), c: ec - float64(curr.c)}
 		}
 	}
-
+	fmt.Println(edges)
 	seen := make(map[FloatPoint]bool)
 	sideCount := 0
 	for edge, dir := range edges {
@@ -123,17 +131,19 @@ func findSides(region []Point) int {
 		if math.Mod(edge.r, 1) == 0 {
 			for _, dr := range []float64{-1, 1} {
 				cr := edge.r + dr
-				nextEdge := FloatPoint{cr, edge.c}
-				for edges[nextEdge] == dir {
-					seen[nextEdge] = true
-				}
+
+				for edges[FloatPoint{r: cr, c: edge.c}] == dir {
+					seen[FloatPoint{r: cr, c: edge.c}] = true
+					cr += dr
+				} // --> Goes into loop ??
 			}
 		} else {
 			for _, dc := range []float64{-1, 1} {
 				cc := edge.c + dc
-				nextEdge := FloatPoint{edge.r, cc}
-				for edges[nextEdge] == dir {
-					seen[nextEdge] = true
+
+				for edges[FloatPoint{r: edge.r, c: cc}] == dir {
+					seen[FloatPoint{r: edge.r, c: cc}] = true
+					cc += dc
 				}
 			}
 		}
@@ -142,7 +152,7 @@ func findSides(region []Point) int {
 }
 
 func parseInput() [][]rune {
-	file, err := os.Open("example.txt")
+	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
