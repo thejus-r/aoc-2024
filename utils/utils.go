@@ -21,3 +21,11 @@ func Check(err error) {
 		panic(err)
 	}
 }
+
+func SimpleMod(a, b int) int {
+	r := a % b
+	if r < 0 && b > 0 {
+		r += b
+	}
+	return r
+}
